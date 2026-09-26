@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CurioNews — Notícias e curiosidades.">
+  <title>CurioNews — Notícias e Curiosidades</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav-wrap">
+      <a class="brand" href="#" aria-label="CurioNews">
+        <span class="brand-icon">🌎</span>
+        <span><strong>Curio<span>News</span></strong><small>Notícias e Curiosidades</small></span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+
+      <nav class="nav" id="mainNav">
+        <a class="active" href="#inicio">⌂ <span>Início</span></a>
+        <a href="#noticias">▣ <span>Notícias</span></a>
+        <a href="#curiosidades">💡 <span>Curiosidades</span></a>
+        <a href="#categorias">▦ <span>Categorias</span></a>
+        <a href="#sobre">ⓘ <span>Sobre</span></a>
+      </nav>
+
+      <div class="header-actions">
+        <label class="search">
+          <input id="searchInput" type="search" placeholder="Buscar notícias ou curiosidades..." aria-label="Buscar">
+          <span>⌕</span>
+        </label>
+        <button class="icon-btn" id="themeToggle" aria-label="Alternar tema">☾</button>
+      </div>
+    </div>
+  </header>
+  <div id="anuncio-topo" class="area-anuncio"></div>
+
+  <main id="inicio" class="container">
+    <section class="hero-grid">
+      <article class="hero-card article-card" data-category="Ciência" data-title="Cientistas descobrem nova forma de vida em oceanos profundos">
+        <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1400&q=85" alt="Planeta Terra visto do espaço">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <class="category" data-filter="Ciência"><span class="tag blue">CIÊNCIA</span>
+          <a href="ciencia.html"><h1>Cientistas descobrem nova forma de vida em oceanos profundos</h1></a>
+          <p>Pesquisadores encontraram um organismo nunca visto antes em regiões extremas do oceano, o que pode mudar o que sabemos sobre a vida no planeta.</p>
+          <div class="meta"><span>▣ 12 de abril de 2025</span><span></div>
+        </div>
+      </article>
+
+      <div class="side-news">
+       <a href="tecnologia.html"> <article class="mini-card article-card" data-category="Tecnologia" data-title="Nova missão espacial brasileira deve ser lançada em 2026">
+          <img src="https://images.unsplash.com/photo-1517976547714-720226b864c1?auto=format&fit=crop&w=500&q=80" alt="Foguete">
+          <div><span class="tag blue">TECNOLOGIA</span><h3>Nova missão espacial brasileira deve ser lançada em 2026</h3><div class="meta">▣ 11 de abril de 2025　● 8</div></div>
+        </article></a>
+        <a href="entretenimento.html"> <article class="mini-card article-card" data-category="Entretenimento" data-title="Nova temporada da série é anunciada">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5ChbFdr8wRZ-BIKa7Mjl4GAfZQFsvq6wMwQEuxnPgFw&s=10" alt="Smartphone">
+          <div><span class="tag orange">ENTRETENIMENTO</span><h3>Nova temporada da série é anunciada</h3><div class="meta">▣ 23 de setembro de 2026　● 15</div></div>
+        </article></a>
+        <a href="noticias.html"> <article class="mini-card article-card" data-category="Notícias" data-title="Flamengo vence e segue líder do Brasileirão">
+          <img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=500&q=80" alt="Futebol">
+          <div><span class="tag green">NOTÍCIAS</span><h3>Flamengo vence e segue líder do Brasileirão</h3><div class="meta">▣ 10 de abril de 2025　● 22</div></div>
+        </article></a>
+        <a href="mundo.html"> <article class="mini-card article-card" data-category="Mundo" data-title="Conheça 5 lugares incríveis para visitar no Brasil">
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=500&q=80" alt="Paisagem brasileira">
+          <div><span class="tag yellow">MUNDO</span><h3>Conheça 5 lugares incríveis para visitar no Brasil</h3><div class="meta">▣ 9 de abril de 2025　● 10</div></div>
+        </article></a>
+      </div>
+
+      <aside class="curiosity" id="curiosidades">
+        <h2>💡 Curiosidade do dia</h2>
+        <img id="curiosityImage" src="https://images.unsplash.com/photo-1560275619-4662e36fa65c?auto=format&fit=crop&w=700&q=85" alt="Baleia no oceano">
+        <h3>Você sabia que...</h3>
+        <p id="curiosityText">O coração de uma baleia-azul pode pesar mais de 100 kg. É o maior coração do reino animal!</p>
+        <button class="primary" id="newCuriosity">↻ &nbsp;Outra curiosidade</button>
+        <a href="#curiosidades-list">Ver todas as curiosidades →</a>
+      </aside>
+    </section>
+
+    <section class="categories" id="categorias">
+      <a href="brasil.html" class="category" data-filter="Brasil"><span>🇧🇷</span><b>Brasil</b><small>Notícias do Brasil</small></a>
+      <a href="mundo.html" class="category" data-filter="Mundo"><span>🌎</span><b>Mundo</b><small>Acontece no mundo</small></a>
+      <a href="tecnologia.html" class="category" data-filter="Tecnologia"><span>💻</span><b>Tecnologia</b><small>Inovação e futuro</small></a>
+      <a href="ciencia.html" class="category" data-filter="Ciência"><span>⚛️</span><b>Ciência</b><small>Descobertas e estudos</small></a>
+     
+      <a href="entretenimento.html" class="category" data-filter="Entretenimento"><span>⭐</span><b>Entretenimento</b><small>Filmes, séries e mais</small></a>
+      <a href="noticias.html" class="category" data-filter="Notícias"><span>📈</span><b>Notícias</b><small>Notícias</small></a>
+    </section>
+
+    <section class="content-grid" id="noticias">
+      <div>
+        <div class="section-title"><h2>▤ &nbsp;Últimas notícias</h2></div>
+        <div id="anuncio-entre" class="area-anuncio"></div>
+        <div class="news-grid" id="newsGrid">
+          <p>Carregando notícias...</p>
+        </div>
+      </div>
+
+      <aside class="popular">
+        <div class="section-title"><h2>★ &nbsp;Mais lidas</h2></div>
+        <div class="popular-item"><b>1</b><img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=250&q=75" alt=""><span>iPhone 17 pode trazer mudanças incríveis no design<small>15.4 mil visualizações</small></span></div>
+        <div class="popular-item"><b>2</b><img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=250&q=75" alt=""><span>Cientistas descobrem nova forma de vida em oceanos profundos<small>12.7 mil visualizações</small></span></div>
+        <div class="popular-item"><b>3</b><img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=250&q=75" alt=""><span>Flamengo vence e segue líder do Brasileirão<small>10.3 mil visualizações</small></span></div>
+        <div class="popular-item"><b>4</b><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=250&q=75" alt=""><span>Conheça 5 lugares incríveis para visitar no Brasil<small>8.9 mil visualizações</small></span></div>
+      </aside>
+    </section>
+
+    <section id="curiosidades-list" class="curiosidades-list">
+      <div class="section-title"><h2>💡 Curiosidades</h2></div>
+      <div class="facts">
+        <div><b>01</b><p>Polvos possuem três corações e sangue azul.</p></div>
+        <div><b>02</b><p>Um raio pode atingir temperaturas maiores que a superfície do Sol.</p></div>
+        <div><b>03</b><p>O mel pode permanecer preservado por milhares de anos em condições adequadas.</p></div>
+      </div>
+    </section>
+
+
+
+    <section id="sobre" class="about">
+      <h2>Sobre o CurioNews e fundadores</h2>
+      <p>Um portal demonstrativo de notícias, ciência, tecnologia e curiosidades. Tendo Handson Willan e Rute Felix criado curioNews em 2026 com o objetivo de trazer informações fascinantes e curiosidades para os leitores.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="brand"><span class="brand-icon">🌎</span><span><strong>Curio<span>News</span></strong><small>Notícias e Curiosidades</small></span></div>
+      <p>Notícias e Curiosidades　•　Informação que desperta a sua curiosidade</p><a href="admin/login.html" style="color:#fff;font-size:11px">Área ADM</a>
+      <div class="social">●　◎　▶　𝕏</div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/public-news.js"></script>
+  <script src="js/anuncios.js"></script>
+  <div id="anuncio-rodape" class="area-anuncio"></div>
+</body>
+</html>

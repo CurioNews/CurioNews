@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Painel ADM — CurioNews</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+body{min-height:100vh;background:var(--bg)}.panel{width:min(900px,calc(100% - 30px));margin:35px auto}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}.panel-head h1{margin:0}.form{background:var(--card);padding:24px;border-radius:14px;box-shadow:var(--shadow)}.field{display:block;margin:14px 0}.field span{display:block;font-size:12px;font-weight:700;margin-bottom:6px}.field input,.field textarea,.field select{width:100%;box-sizing:border-box;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);font:inherit}.field textarea{min-height:150px;resize:vertical}.btn{border:0;border-radius:8px;padding:12px 18px;font-weight:800;cursor:pointer;background:#147fe0;color:#fff}.logout{background:#b42318}.msg{margin-top:12px;font-size:12px}.list{margin-top:24px}.item{background:var(--card);padding:15px;border-radius:10px;margin:10px 0;display:flex;justify-content:space-between;gap:15px}.item h3{margin:0 0 5px;font-size:14px}.item small{color:var(--muted)}
+</style></head>
+<body>
+<div class="panel">
+<div class="panel-head"><div><h1>⚙️ Painel ADM</h1><small>CurioNews</small></div><div><a class="btn" href="../index.html">Ver site</a> <button class="btn logout" id="logout">Sair</button></div></div>
+<div class="form">
+<h2>Publicar notícia</h2>
+<label class="field"><span>Título *</span><input id="titulo" placeholder="Título da notícia"></label>
+<label class="field"><span>Categoria *</span><select id="categoria"><option>Brasil</option><option>Mundo</option><option>Tecnologia</option><option>Ciência</option><option>Entretenimento</option><option>Esportes</option><option>Turismo</option><option>Notícias</option></select></label>
+<label class="field"><span>Resumo</span><input id="resumo" placeholder="Resumo curto"></label>
+<label class="field"><span>URL da imagem</span><input id="imagem" placeholder="https://..."></label>
+<label class="field"><span>Conteúdo *</span><textarea id="conteudo" placeholder="Escreva a notícia..."></textarea></label>
+<button class="btn" id="publicar">PUBLICAR NOTÍCIA</button><div class="msg" id="msg"></div>
+</div>
+<div class="list"><h2>Últimas publicações</h2><div id="lista"></div></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-config.js"></script>
+<script>
+const $=id=>document.getElementById(id), msg=$('msg');
+async function check(){const {data}=await supabaseClient.auth.getSession();if(!data.session) location.href='login.html';}
+check();
+$('logout').onclick=async()=>{await supabaseClient.auth.signOut();location.href='login.html'};
+$('publicar').onclick=async()=>{
+ const titulo=$('titulo').value.trim(), categoria=$('categoria').value, resumo=$('resumo').value.trim(), imagem=$('imagem').value.trim(), conteudo=$('conteudo').value.trim();
+ if(!titulo||!conteudo){msg.textContent='Preencha o título e o conteúdo.';return;}
+ msg.textContent='Publicando...';
+ const {error}=await supabaseClient.from('noticias').insert({titulo,categoria,resumo,imagem,conteudo});
+ if(error){msg.textContent='Erro ao publicar: '+error.message;return;}
+ msg.textContent='Notícia publicada com sucesso!';['titulo','resumo','imagem','conteudo'].forEach(id=>$(id).value='');load();
+};
+async function load(){const {data,error}=await supabaseClient.from('noticias').select('*').order('created_at',{ascending:false}).limit(10);if(error){$('lista').textContent=error.message;return} $('lista').innerHTML=data.map(n=>`<div class="item"><div><h3>${escapeHtml(n.titulo)}</h3><small>${escapeHtml(n.categoria||'Notícias')} · ${new Date(n.created_at).toLocaleString('pt-BR')}</small></div></div>`).join('')||'<p>Nenhuma notícia publicada ainda.</p>';}
+function escapeHtml(s=''){return s.replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+load();
+</script>
+
+<section id="gerenciar-anuncios" class="form" style="margin-top:24px;">
+    <h2>📢 Gerenciar anúncios</h2>
+    <form id="form-anuncio">
+        <input type="hidden" id="anuncio-id">
+
+        <label class="field"><span>Nome do anúncio</span>
+            <input type="text" id="anuncio-nome" placeholder="Ex: Loja do João" required>
+        </label>
+
+        <label class="field"><span>URL da imagem</span>
+            <input type="url" id="anuncio-imagem" placeholder="https://site.com/banner.jpg" required>
+        </label>
+
+        <label class="field"><span>Link do anúncio</span>
+            <input type="url" id="anuncio-link" placeholder="https://site.com" required>
+        </label>
+
+        <label class="field"><span>Posição</span>
+            <select id="anuncio-posicao">
+                <option value="topo">Topo</option>
+                <option value="entre" selected>Entre as notícias</option>
+                <option value="rodape">Rodapé</option>
+            </select>
+        </label>
+
+        <label class="field">
+            <input type="checkbox" id="anuncio-ativo" checked>
+            Anúncio ativo
+        </label>
+
+        <button class="btn" type="submit">Salvar anúncio</button>
+        <button class="btn" type="button" id="cancelar-edicao-anuncio" style="display:none;background:#777;">Cancelar edição</button>
+    </form>
+
+    <div class="list">
+        <h3>Anúncios cadastrados</h3>
+        <div id="lista-anuncios">Carregando anúncios...</div>
+    </div>
+</section>
+
+<script src="../js/admin-anuncios.js"></script>
+</body></html>

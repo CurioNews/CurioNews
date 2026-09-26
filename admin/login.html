@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Login ADM — CurioNews</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+body{min-height:100vh;display:grid;place-items:center;background:var(--bg)}
+.login{width:min(420px,calc(100% - 30px));background:var(--card);padding:30px;border-radius:16px;box-shadow:var(--shadow)}
+.login h1{margin:0 0 8px}.login p{color:var(--muted);font-size:13px;margin-bottom:22px}.field{display:block;margin:14px 0}.field span{display:block;font-size:12px;font-weight:700;margin-bottom:6px}.field input{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);box-sizing:border-box}.btn{width:100%;border:0;border-radius:8px;padding:13px;font-weight:800;cursor:pointer;background:#147fe0;color:white}.msg{font-size:12px;margin-top:12px;color:#d44}.back{display:block;text-align:center;margin-top:18px;font-size:12px;color:#147fe0}
+</style></head>
+<body>
+<div class="login">
+<h1>🌎 CurioNews</h1><p>Área administrativa. Entre com o usuário criado no Supabase.</p>
+<label class="field"><span>E-mail</span><input id="email" type="email" autocomplete="username"></label>
+<label class="field"><span>Senha</span><input id="password" type="password" autocomplete="current-password"></label>
+<button class="btn" id="loginBtn">ENTRAR</button><div class="msg" id="msg"></div>
+<a class="back" href="../index.html">← Voltar para o site</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-config.js"></script>
+<script>
+const email=document.getElementById('email'), password=document.getElementById('password'), msg=document.getElementById('msg');
+document.getElementById('loginBtn').onclick=async()=>{
+ msg.textContent='Entrando...';
+ const {error}=await supabaseClient.auth.signInWithPassword({email:email.value.trim(),password:password.value});
+ if(error){msg.textContent='E-mail ou senha incorretos.';return;}
+ location.href='painel.html';
+};
+supabaseClient.auth.getSession().then(({data})=>{if(data.session) location.href='painel.html';});
+</script>
+</body></html>

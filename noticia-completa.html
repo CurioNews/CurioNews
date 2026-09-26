@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Notícia - CurioNews</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        body {
+            margin: 0;
+            background: #061525;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        /* TOPO */
+
+        .topo {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            background: #03101d;
+            border-bottom: 1px solid #12314a;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .logo span {
+            color: #00aaff;
+        }
+
+
+        /* NOTÍCIA */
+
+        .noticia-container {
+            max-width: 950px;
+            margin: 45px auto;
+            padding: 0 25px;
+        }
+
+
+        /* VOLTAR */
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 30px;
+
+            color: #00aaff;
+
+            text-decoration: none;
+
+            font-size: 16px;
+        }
+
+        .voltar:hover {
+            text-decoration: underline;
+        }
+
+
+        /* CATEGORIA */
+
+        .categoria {
+            color: #00aaff;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            margin-bottom: 15px;
+        }
+
+
+        /* TÍTULO */
+
+        .titulo-noticia {
+            font-size: 46px;
+
+            line-height: 1.15;
+
+            margin: 0 0 18px;
+        }
+
+
+        /* DATA */
+
+        .data-noticia {
+            color: #8195a6;
+
+            font-size: 14px;
+
+            margin-bottom: 30px;
+        }
+
+
+        /* IMAGEM */
+
+        .imagem-noticia {
+            width: 100%;
+
+            max-height: 550px;
+
+            object-fit: cover;
+
+            display: block;
+
+            border-radius: 14px;
+
+            margin-bottom: 30px;
+        }
+
+
+        /* RESUMO */
+
+        .resumo-noticia {
+            font-size: 21px;
+
+            line-height: 1.6;
+
+            color: #c7d4df;
+
+            font-weight: bold;
+
+            margin-bottom: 30px;
+        }
+
+
+        /* CONTEÚDO */
+
+        .conteudo-noticia {
+            font-size: 19px;
+
+            line-height: 1.8;
+
+            color: #e1e8ed;
+
+            white-space: pre-line;
+        }
+
+
+        /* CARREGANDO */
+
+        .carregando {
+            color: #9fb1c1;
+
+            font-size: 18px;
+        }
+
+
+        /* ERRO */
+
+        .erro {
+            color: #ff7070;
+
+            font-size: 18px;
+        }
+
+
+        /* CELULAR */
+
+        @media (max-width: 700px) {
+
+            .noticia-container {
+                margin-top: 30px;
+            }
+
+            .titulo-noticia {
+                font-size: 31px;
+            }
+
+            .resumo-noticia {
+                font-size: 18px;
+            }
+
+            .conteudo-noticia {
+                font-size: 17px;
+            }
+
+            .topo {
+                padding: 0 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- TOPO -->
+
+    <header class="topo">
+
+        <div class="logo">
+
+            CURIO<span>NEWS</span>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- NOTÍCIA -->
+
+    <main
+        id="noticia"
+        class="noticia-container"
+    >
+
+        <p class="carregando">
+
+            Carregando notícia...
+
+        </p>
+
+    </main>
+
+
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase-config.js"></script>
+
+
+
+    <script>
+
+
+        async function carregarNoticia() {
+
+
+            const area =
+                document.getElementById("noticia");
+
+
+
+            /*
+             * Pega o ID da notícia
+             *
+             * Exemplo:
+             *
+             * noticia-completa.html?id=5
+             */
+
+            const parametros =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+
+            const id =
+                parametros.get("id");
+
+
+
+            /*
+
+             * Se não existir ID
+             */
+
+            if (!id) {
+
+                area.innerHTML = `
+
+                    <p class="erro">
+
+                        Notícia não encontrada.
+
+                    </p>
+
+                `;
+
+                return;
+
+            }
+
+
+
+            try {
+
+
+                /*
+                 * Verifica Supabase
+                 */
+
+                if (
+                    typeof supabaseClient ===
+                    "undefined"
+                ) {
+
+                    throw new Error(
+                        "Supabase não foi carregado."
+                    );
+
+                }
+
+
+
+                /*
+                 * Busca a notícia
+                 */
+
+                const { data, error } =
+                    await supabaseClient
+
+                        .from("noticias")
+
+                        .select(
+                            "id,titulo,resumo,conteudo,imagem,categoria,created_at"
+                        )
+
+                        .eq("id", id)
+
+                        .single();
+
+
+
+                /*
+                 * Verifica erro
+                 */
+
+                if (error) {
+
+                    throw error;
+
+                }
+
+
+
+                /*
+                 * Caso não encontre
+                 */
+
+                if (!data) {
+
+                    area.innerHTML = `
+
+                        <p class="erro">
+
+                            Notícia não encontrada.
+
+                        </p>
+
+                    `;
+
+                    return;
+
+                }
+
+
+
+                /*
+                 * Dados da notícia
+                 */
+
+                const titulo =
+                    escapar(
+                        data.titulo ||
+                        "Sem título"
+                    );
+
+
+                const resumo =
+                    escapar(
+                        data.resumo || ""
+                    );
+
+
+                const conteudo =
+                    escapar(
+                        data.conteudo || ""
+                    );
+
+
+                const categoria =
+                    escapar(
+                        data.categoria ||
+                        "Notícias"
+                    );
+
+
+
+                /*
+                 * Data
+                 */
+
+                const dataNoticia =
+                    data.created_at
+
+                    ? new Date(
+                        data.created_at
+                    ).toLocaleDateString(
+                        "pt-BR"
+                    )
+
+                    : "";
+
+
+
+                /*
+                 * Imagem
+                 */
+
+                let imagem = "";
+
+
+
+                if (data.imagem) {
+
+
+                    const imagemSegura =
+                        safeUrl(
+                            data.imagem
+                        );
+
+
+
+                    if (imagemSegura) {
+
+                        imagem = `
+
+                            <img
+
+                                class="imagem-noticia"
+
+                                src="${imagemSegura}"
+
+                                alt="${titulo}"
+
+                            >
+
+                        `;
+
+                    }
+
+                }
+
+
+
+                /*
+                 * Monta a página
+                 */
+
+                area.innerHTML = `
+
+
+                    <a
+                        href="javascript:history.back()"
+                        class="voltar"
+                    >
+
+                        ← Voltar
+
+                    </a>
+
+
+
+                    <div class="categoria">
+
+                        ${categoria.toUpperCase()}
+
+                    </div>
+
+
+
+                    <h1
+                        class="titulo-noticia"
+                    >
+
+                        ${titulo}
+
+                    </h1>
+
+
+
+                    <div
+                        class="data-noticia"
+                    >
+
+                        🗓️ ${dataNoticia}
+
+                    </div>
+
+
+
+                    ${imagem}
+
+
+
+                    <div
+                        class="resumo-noticia"
+                    >
+
+                        ${resumo}
+
+                    </div>
+
+
+
+                    <div
+                        class="conteudo-noticia"
+                    >
+
+                        ${conteudo}
+
+                    </div>
+
+
+                `;
+
+
+
+                /*
+                 * Altera o título
+                 * da aba do navegador
+                 */
+
+                document.title =
+                    titulo +
+                    " - CurioNews";
+
+
+            }
+
+
+            catch (erro) {
+
+
+                console.error(
+                    "Erro ao carregar notícia:",
+                    erro
+                );
+
+
+                area.innerHTML = `
+
+                    <p class="erro">
+
+                        Erro ao carregar a notícia.
+
+                    </p>
+
+                `;
+
+            }
+
+        }
+
+
+
+        /*
+         * Proteção contra HTML
+         */
+
+        function escapar(valor) {
+
+            return String(valor)
+
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+
+                .replace(
+                    /'/g,
+                    "&#39;"
+                );
+
+        }
+
+
+
+        /*
+         * Verifica URL da imagem
+         */
+
+        function safeUrl(valor) {
+
+            try {
+
+
+                const url =
+                    new URL(valor);
+
+
+
+                if (
+                    url.protocol === "http:" ||
+                    url.protocol === "https:"
+                ) {
+
+                    return escapar(valor);
+
+                }
+
+
+                return "";
+
+
+            }
+            catch (erro) {
+
+                return "";
+
+            }
+
+        }
+
+
+
+        /*
+         * Inicia quando a página abre
+         */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            carregarNoticia
+        );
+
+
+    </script>
+
+
+</body>
+
+</html>
