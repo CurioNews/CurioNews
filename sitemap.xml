@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
   <url>
-    <loc>https://curionews.github.io/CurioNews/</loc>
+    <loc>https://curionews.site/</loc>
   </url>
+
   <url>
-    <loc>https://curionews.github.io/CurioNews/brasil.html</loc>
+    <loc>https://curionews.site/brasil.html</loc>
   </url>
+
   <url>
-    <loc>https://curionews.github.io/CurioNews/ciencia.html</loc>
+    <loc>https://curionews.site/ciencia.html</loc>
   </url>
+
   <url>
-    <loc>https://curionews.github.io/CurioNews/entretenimento.html</loc>
+    <loc>https://curionews.site/entretenimento.html</loc>
   </url>
+
   <url>
-    <loc>https://curionews.github.io/CurioNews/mundo.html</loc>
+    <loc>https://curionews.site/mundo.html</loc>
   </url>
+
   <url>
-    <loc>https://curionews.github.io/CurioNews/noticias.html</loc>
+    <loc>https://curionews.site/noticias.html</loc>
   </url>
+
+  <url>
+    <loc>https://curionews.site/tecnologia.html</loc>
+  </url>
+
+  <url>
+    <loc>https://curionews.site/noticia-completa.html</loc>
+  </url>
+
 </urlset>
